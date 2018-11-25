@@ -2,7 +2,7 @@ include <../libs/MCAD/stepper.scad>
 use <Limit_Switch_v1_0.scad>
 use <../libs/parametric_involute_gear_v5.0.scad>
 use <../libs/spur_generator.scad>
-
+//$fs=0.5;
 dip_width=10;
 thickness=4;
 internal_width=130;
@@ -84,8 +84,8 @@ limit_switch_dip_pos=[for(i=[0:len(limit_switch_mount_pos)-1])
 		
 front_io_height=main_slide_pos.z+thickness/2;
 front_io_pos=main_slide_pos-[thickness/2,0,main_slide_pos.z/2+3*thickness/4];
-front_io_dip_pos=[for(i=[-1,1]*(internal_width+thickness)/2) 
-		front_io_pos+[0,i,-front_io_height/2+dip_width/2]];
+//front_io_dip_pos=[for(i=[-1,1]*(internal_width+thickness)/2) 
+//		front_io_pos+[0,i,-front_io_height/2+dip_width/2]];
 	
 // Modules
 module dip_square(center=true) {
@@ -131,7 +131,7 @@ module small_gear() {
 			hub_thickness=gear_thickness,
 			gear_thickness=gear_thickness);
 }
-module stack_side(dip=true,mirorred=false) {
+module stack_side(dip=true,mirrored=false) {
 	l=main_side_length;
 	h=stack_side_height;
 	sdl=sinus_dip_length;
@@ -258,7 +258,7 @@ module front_io() {
 			translate([(h-thickness)/2,loader_plate_front_dip_pos[i].y,0])
 				dip_square();
 		circle(d=25);
-		translate([h/2-thickness-rjh-dip_width,-w/2,0])
+		translate([h/2-thickness-rjh,-w/2,0])
 			square([rjh,rjw]);
 		
 				
