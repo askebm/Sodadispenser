@@ -162,7 +162,9 @@ module stack_side(dip=true,mirorred=false) {
 			dip_sinus_polygon(length=sdl,d=0);
 		mirror([0,mirrored?1:0,0])
 		translate(-[stack_side_pos[0].x,stack_side_pos[0].z,0]){
+			disp= mirrored?0:soda_spacing;
 			for(i=[0:len(stack_slide_dip_pos)-1])
+				translate(-[disp,0,0])
 				translate([stack_slide_dip_pos[i].x,stack_slide_dip_pos[i].z,0])
 				rotate([0,0,90+slide_angle]) dip_square();
 			for(x=[0,dispenser_length+0.2])
