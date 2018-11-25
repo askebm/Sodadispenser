@@ -1,0 +1,6 @@
+[submodule "libs/mdsSpurGear"]
+	path = libs/mdsSpurGear
+	url = https://github.com/mseminatore/mdsSpurGear.git
+[submodule "libs/MCAD"]
+	path = libs/MCAD
+	url = https://github.com/SolidCode/MCAD.git

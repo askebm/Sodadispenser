@@ -1,0 +1,141 @@
+include <../libs/MCAD/stepper.scad>
+use <../libs/parametric_involute_gear_v5.0.scad>
+use <../libs/spur_generator.scad>
+
+dip_width=10;
+thickness=4;
+internal_width=130;
+safe_space=5;
+
+teeth1=50;
+teeth2=24;
+circular_pitch=fit_spur_gears(teeth1,teeth2,57);
+gear_thickness=thickness;
+R_gear=gear_outer_radius(teeth1,circular_pitch);
+r_gear=gear_outer_radius(teeth2,circular_pitch);
+d_cutout=65;
+
+main_axel_diameter=8;
+
+// Positions
+small_gear_pos=[0,30,motorWidth(model=Nema17)/2];
+motor_pos=small_gear_pos-[0,10,0];
+motor_mount_pos=motor_pos+[0,thickness-1,0];
+big_gear_pos1=small_gear_pos+[sqrt(pow(r_gear+R_gear,2)-pow(R_gear-r_gear,2)),0,R_gear-r_gear];
+big_gear_pos2=big_gear_pos1-[0,60,0];
+main_axel_pos1=[big_gear_pos1.x,0,0];
+loader_plate_pos=[-safe_space-motorWidth(model=Nema17)/2,-internal_width/2,0];
+axel_mount_dip_offset=main_axel_diameter/2+dip_width/2;
+
+module big_gear() {
+	translate([0,0,-gear_thickness/2])
+	color("YellowGreen")
+	difference() {
+	gear(number_of_teeth=teeth1,
+		circular_pitch=circular_pitch,
+		pressure_angle=20,
+		rim_thickness=gear_thickness,
+		hub_thickness=gear_thickness,
+		gear_thickness=gear_thickness,
+		bore_diameter=main_axel_diameter);
+	a=sqrt(pow(gear_thickness*2+d_cutout/2,2)/2);
+	rotate([0,0,5])
+	translate([a,a,1])
+	cylinder(h=gear_thickness*2,d=d_cutout,center=true);
+	 }
+}
+module small_gear() {
+	translate([0,0,-gear_thickness/2])
+	rotate([0,0,360/(2*teeth2)])
+		color("YellowGreen")
+		gear(number_of_teeth=teeth2,
+			circular_pitch=circular_pitch,
+			pressure_angle=20,
+			rim_thickness=gear_thickness,
+			hub_thickness=gear_thickness,
+			gear_thickness=gear_thickness);
+}
+module dip_square(center=true) {
+	square([thickness,dip_width],center=center);
+}
+module loader_plate() {
+	translate([0,0,-thickness])
+		linear_extrude(height=thickness)
+			difference () {
+				square([internal_width,internal_width]);
+				translate(main_axel_pos1-loader_plate_pos)
+					for(i=[-1,1]) translate([i*axel_mount_dip_offset,0,0])
+					rotate([0,0,90])
+					dip_square();
+			}
+}
+module axel_mount() {
+	d=thickness;
+	rotate([90,0,0])
+	translate([0,0,-thickness/2])
+	linear_extrude(height=thickness)
+	difference() {
+		union() {
+		polygon(points=[
+			[-dip_width-main_axel_diameter/2,0],
+			[-main_axel_diameter/2-d,big_gear_pos1.z],
+			[main_axel_diameter/2+d,big_gear_pos1.z],
+			[dip_width+main_axel_diameter/2,0],
+			[dip_width+main_axel_diameter/2,-thickness],
+			[main_axel_diameter/2,-thickness],
+			[main_axel_diameter/2,0],
+			[-main_axel_diameter/2,0],
+			[-main_axel_diameter/2,-thickness],
+			[-dip_width-main_axel_diameter/2,-thickness]]);
+		translate([0,big_gear_pos1.z,0])
+			circle(d=main_axel_diameter+2*d);
+		}
+		translate([0,big_gear_pos1.z,0])
+			circle(d=main_axel_diameter);	
+	}
+}
+module motor_mount() {
+	w=motorWidth(model=Nema17);
+	rotate([90,0,0])
+	linear_extrude(height=thickness)
+	difference() {
+		polygon(points=[[-w/2,w/2],
+			[w/2,w/2],
+			[w/2,-w/2-thickness],
+			[w/2-dip_width,-w/2-thickness],
+			[w/2-dip_width,-w/2],
+			[-w/2+dip_width,-w/2],
+			[-w/2+dip_width,-w/2-thickness],
+			[-w/2,-w/2-thickness]]);
+		circle(d=2+lookup(NemaRoundExtrusionDiameter,Nema17));
+		dist=lookup(NemaDistanceBetweenMountingHoles,Nema17);
+		for(x=[-1,1]) for(y=[-1,1])
+			translate([x*dist/2,y*dist/2,0])
+				circle(d=0.5+lookup(NemaMountingHoleDiameter,Nema17));
+	}
+}
+module loader() {
+	//Make gear teeth lineup correctly
+	gv=acos(sqrt(pow(r_gear+R_gear,2)-pow(R_gear-r_gear,2))/(R_gear+r_gear));
+	translate(motor_pos)
+		motor(Nema17, orientation=[90,0,0]);
+	translate(small_gear_pos) 
+		rotate([90,0,0])
+		rotate([0,0,gv])
+			small_gear();
+	translate(big_gear_pos1)
+		rotate([90,0,0])
+		rotate([0,0,gv])
+			big_gear();
+	translate(big_gear_pos2)
+		rotate([90,0,0])
+		rotate([0,0,gv])
+			big_gear();
+	translate(motor_mount_pos)
+		motor_mount();
+	translate(main_axel_pos1)
+		axel_mount();
+	translate(loader_plate_pos)
+		loader_plate();
+}
+loader();
