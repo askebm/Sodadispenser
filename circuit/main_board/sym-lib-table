@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name pololu_a4988)(type Legacy)(uri /home/aske/git/Sodadispenser/circuit/pololu_a4988.lib)(options "")(descr ""))
+)
