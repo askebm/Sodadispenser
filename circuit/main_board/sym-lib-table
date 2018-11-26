@@ -1,3 +1,4 @@
 (sym_lib_table
   (lib (name pololu_a4988)(type Legacy)(uri /home/aske/git/Sodadispenser/circuit/pololu_a4988.lib)(options "")(descr ""))
+  (lib (name main_board-rescue)(type Legacy)(uri ${KIPRJMOD}/main_board-rescue.lib)(options "")(descr ""))
 )
