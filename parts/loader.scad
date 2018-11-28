@@ -248,8 +248,8 @@ module slide(slids=false){
 module front_io() {
 	h=front_io_height;
 	w=internal_width;
-	rjw=15;
-	rjh=10;
+	rjw=16;
+	rjh=13.3;
 	rotate([0,90,0])
 	linear_extrude(height=thickness,center=true)
 	difference() {
@@ -264,7 +264,7 @@ module front_io() {
 			translate([(h-thickness)/2,loader_plate_front_dip_pos[i].y,0])
 				dip_square();
 		circle(d=25);
-		translate([h/2-thickness-rjh,-w/2,0])
+		translate([h/2-thickness-rjh-3,-w/2,0])
 			square([rjh,rjw]);
 		
 				
@@ -370,8 +370,9 @@ module main_side(dip=true) {
 				for(i=[0:len(main_backplate_dip_pos)-1])
 					translate([main_backplate_dip_pos[i].x,main_backplate_dip_pos[i].z,0])
 						dip_square();
-				translate([front_io_dip_pos[0].x,front_io_dip_pos[0].z,0])
-					dip_square();
+				if(front_io_dip_pos)
+					translate([front_io_dip_pos[0].x,front_io_dip_pos[0].z,0])
+						dip_square();
 				}
 			}
 			if(dip)
@@ -459,7 +460,7 @@ module ramp() {
 	translate(ramp_backplate_pos)
 		ramp_backplate();
 }
-!ramp();
+//!ramp();
 module loader() {
 	//Make gear teeth lineup correctly
 	gv=acos(sqrt(pow(r_gear+R_gear,2)-pow(R_gear-r_gear,2))/(R_gear+r_gear));
