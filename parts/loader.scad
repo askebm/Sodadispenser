@@ -87,6 +87,12 @@ front_io_pos=main_slide_pos-[thickness/2,0,main_slide_pos.z/2+3*thickness/4];
 //front_io_dip_pos=[for(i=[-1,1]*(internal_width+thickness)/2) 
 //		front_io_pos+[0,i,-front_io_height/2+dip_width/2]];
 	
+ramp_length=sqrt(pow(3*(internal_width+2*thickness),2)+pow(main_slide_pos.z,2));
+ramp_angle=asin(main_slide_pos.z/ramp_length);
+ramp_backplate_pos=[-3*(internal_width+2*thickness)+thickness/2,0,main_slide_pos.z/2-tan(ramp_angle)*thickness];
+ramp_backplate_height=main_slide_pos.z-tan(ramp_angle)*thickness;
+
+
 // Modules
 module dip_square(center=true) {
 	square([thickness,dip_width],center=center);
@@ -427,6 +433,33 @@ module limit_switch_mount() {
 		circle(r=r);
 	}
 }
+module ramp_backplate(dxf=false) {
+
+	rotate([0,dxf?0:90,0])
+		linear_extrude(height=thickness,center=true)	
+			square([ramp_backplate_height,soda_spacing],center=true);
+
+}
+module ramp_slide(dxf=false) {
+
+	rotate([0,dxf?0:ramp_angle,0])
+		linear_extrude(height=thickness)
+			translate([-ramp_length/2,0,0])
+				square([ramp_length,soda_spacing],center=true);
+
+}
+module ramp_support_side(dxf=false){
+
+	wt=2*tan(ramp_angle/2)*dip_width;
+	
+
+}
+module ramp() {
+	ramp_slide();
+	translate(ramp_backplate_pos)
+		ramp_backplate();
+}
+!ramp();
 module loader() {
 	//Make gear teeth lineup correctly
 	gv=acos(sqrt(pow(r_gear+R_gear,2)-pow(R_gear-r_gear,2))/(R_gear+r_gear));
