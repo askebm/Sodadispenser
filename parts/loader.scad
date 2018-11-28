@@ -2,7 +2,7 @@ include <../libs/MCAD/stepper.scad>
 use <Limit_Switch_v1_0.scad>
 use <../libs/parametric_involute_gear_v5.0.scad>
 use <../libs/spur_generator.scad>
-//$fs=0.5;
+$fs=0.3;
 dip_width=10;
 thickness=4;
 internal_width=130;
@@ -15,7 +15,7 @@ gear_thickness=thickness;
 R_gear=gear_outer_radius(teeth1,circular_pitch);
 r_gear=gear_outer_radius(teeth2,circular_pitch);
 d_cutout=65;
-gear_spacing=60;
+gear_spacing=70;
 soda_spacing=70;
 
 main_axel_diameter=8;
@@ -25,15 +25,15 @@ dispenser_length=460;
 slide_length=[for(i=[thickness,soda_spacing+1.5*thickness])(dispenser_length-i)/cos(slide_angle)];	
 sinus_dip_length=150;
 
-small_gear_pos=[0,30,motorWidth(model=Nema17)/2];
-motor_pos=small_gear_pos-[0,10,0];
+small_gear_pos=[0,gear_spacing/2,motorWidth(model=Nema17)/2];
+motor_pos=small_gear_pos-[0,15,0];
 motor_mount_pos=motor_pos+[0,1,0];
 motor_mount_dip_offset=motorWidth(model=Nema17)/2-dip_width/2;
 big_gear_pos1=small_gear_pos+[sqrt(pow(r_gear+R_gear,2)-pow(R_gear-r_gear,2)),0,R_gear-r_gear];
 big_gear_pos2=big_gear_pos1-[0,gear_spacing,0];
 main_axel_pos=[[big_gear_pos1.x,0,0],
-				[big_gear_pos1.x,-50,0],
-				[big_gear_pos1.x,50,0]];
+				[big_gear_pos1.x,-55,0],
+				[big_gear_pos1.x,55,0]];
 axel_mount_dip_offset=main_axel_diameter/2+dip_width/2;
 main_slide_pos=[big_gear_pos1.x,0,big_gear_pos1.z]+
 		[R_gear+safe_space+thickness/2,0,
@@ -451,8 +451,14 @@ module ramp_slide(dxf=false) {
 }
 module ramp_support_side(dxf=false){
 
-	wt=2*tan(ramp_angle/2)*dip_width;
-	
+	wt=dip_width;
+	v=ramp_angle;
+	u=90-v;
+	points=[[0,0],
+			[cos(v),sin(v)]*wt,
+			[cos(v),sin(v)]*wt+[cos(-v),sin(-v)]*3*wt,
+			[0,-3*wt]];
+	polygon(points=points);
 
 }
 module ramp() {
