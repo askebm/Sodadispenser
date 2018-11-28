@@ -74,7 +74,7 @@ stack_slide_dip_pos=[for(i=[0:3])
 stack_backplate_dip_pos=[for(i=[-1,1]*stack_side_height/3)
 		[stack_backplate_pos.x,0,i+stack_backplate_pos.z]];
 stack_front_pos=stack_backplate_pos+[dispenser_length,0,0];
-limit_switch_pos=big_gear_pos2+[2*R_gear/3,-11-thickness/2,-10];
+limit_switch_pos=big_gear_pos1+[2*R_gear/3,-12-thickness/2,-20];
 limit_switch_rot=[90,0,180];
 limit_switch_width=6;
 limit_switch_mount_pos=[for(x=[-1,1]*(limit_switch_width+thickness)/2)
