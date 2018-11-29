@@ -272,12 +272,6 @@ Wire Wire Line
 	10900 2650 10900 2600
 Wire Wire Line
 	10450 3250 10550 3250
-Wire Wire Line
-	10550 3250 10900 3250
-Wire Wire Line
-	10900 3250 10900 2850
-Connection ~ 10550 3250
-Connection ~ 10900 2850
 $Comp
 L Driver_Motor:Pololu_Breakout_A4988 A2
 U 1 1 5C08C083
@@ -333,12 +327,6 @@ Wire Wire Line
 	9200 2650 9200 2600
 Wire Wire Line
 	8750 3250 8850 3250
-Wire Wire Line
-	8850 3250 9200 3250
-Wire Wire Line
-	9200 3250 9200 2850
-Connection ~ 8850 3250
-Connection ~ 9200 2850
 $Comp
 L Driver_Motor:Pololu_Breakout_A4988 A3
 U 1 1 5C0924ED
@@ -394,12 +382,6 @@ Wire Wire Line
 	7500 2650 7500 2600
 Wire Wire Line
 	7050 3250 7150 3250
-Wire Wire Line
-	7150 3250 7500 3250
-Wire Wire Line
-	7500 3250 7500 2850
-Connection ~ 7150 3250
-Connection ~ 7500 2850
 $Comp
 L Driver_Motor:Pololu_Breakout_A4988 A4
 U 1 1 5C099549
@@ -455,12 +437,6 @@ Wire Wire Line
 	5800 2650 5800 2600
 Wire Wire Line
 	5350 3250 5450 3250
-Wire Wire Line
-	5450 3250 5800 3250
-Wire Wire Line
-	5800 3250 5800 2850
-Connection ~ 5450 3250
-Connection ~ 5800 2850
 $Comp
 L Driver_Motor:Pololu_Breakout_A4988 A5
 U 1 1 5C0AA574
@@ -516,12 +492,6 @@ Wire Wire Line
 	4100 2650 4100 2600
 Wire Wire Line
 	3650 3250 3750 3250
-Wire Wire Line
-	3750 3250 4100 3250
-Wire Wire Line
-	4100 3250 4100 2850
-Connection ~ 3750 3250
-Connection ~ 4100 2850
 $Comp
 L Driver_Motor:Pololu_Breakout_A4988 A6
 U 1 1 5C0B34F6
@@ -577,12 +547,6 @@ Wire Wire Line
 	2400 2650 2400 2600
 Wire Wire Line
 	1950 3250 2050 3250
-Wire Wire Line
-	2050 3250 2400 3250
-Wire Wire Line
-	2400 3250 2400 2850
-Connection ~ 2050 3250
-Connection ~ 2400 2850
 $Comp
 L Connector:RJ45 J5
 U 1 1 5C1854A0
